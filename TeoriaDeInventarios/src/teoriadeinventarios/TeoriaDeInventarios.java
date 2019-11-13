@@ -8,8 +8,11 @@ package teoriadeinventarios;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,19 +24,73 @@ import javax.swing.text.NumberFormatter;
  *
  * @author kevinbordapenagos
  */
-public class TeoriaDeInventarios {
-
-    /**
-     * @param args the command line arguments
-     */
+public class TeoriaDeInventarios implements ActionListener{
+    
+    public static JComboBox cmDem = new JComboBox();
+    public static JComboBox cmMan = new JComboBox();
+    public static JFormattedTextField diasMes = new JFormattedTextField(3);
+    //Creamos los botones que efectuaran los procesos
+    public static JButton BEoq  = new JButton("EOQ");
+    public static JButton BCsd  = new JButton("Compra Sin Deficit");
+    public static JButton BCcd  = new JButton("Compra Con Deficit");
+    public static JButton BMsd  = new JButton("Manof. sin deficit");
+    public static JButton BMcd  = new JButton("Manof. con deficit");
+    
+    public static JPanel pan = new JPanel();
+    
+    public static JLabel tex = new JLabel();
+    public static JLabel tex2 = new JLabel();
+    
+    //Creamos variables booleanas para saber si usaremos o no el campo
+    boolean D = false, Co = false, Cm = false, Cp = false, Td= false, Mc = false;
+    
     public static void main(String[] args) {
         // TODO code application logic here
+        pan.setBackground(Color.LIGHT_GRAY);
+        pan.setVisible(true);
+        pan.setBounds(360, 270, 400, 180);
+        pan.setLayout(null);
+
+        tex.setFont(new Font("Cambria",Font.ITALIC,20));
+        tex.setForeground(Color.black);
+        tex.setText("Soluciones");
+        tex.setBounds(0, 0, 400, 50);
+        pan.add(tex);
+        tex2.setFont(new Font("Cambria",Font.ITALIC,20));
+        tex2.setForeground(Color.black);
+        tex2.setText("Numero pedidos");
+        tex2.setBounds(0, 70, 400, 50);
+
+        pan.add(tex2);
+        
         JFrame Ventana = new JFrame();
+        
+        Ordenar(Ventana);
         Ventana.setSize(800, 500);
         Ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+        Ventana.getContentPane().setBackground(Color.LIGHT_GRAY);
+        Ventana.add(pan);
         Ventana.setLayout(null);
         
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        Ventana.setLocationRelativeTo(null);
+        Ventana.setVisible(true);
+        
+        
+    }
+    
+    
+    public static void Ordenar (JFrame Ventana){
         JLabel labe = new JLabel();
         labe.setBackground(Color.white);
         labe.setBounds(120,10,500,80);
@@ -42,13 +99,6 @@ public class TeoriaDeInventarios {
         labe.setVisible(true);
         Ventana.add(labe);
         
-        //Creamos los botones que efectuaran los procesos
-        JButton BEoq  = new JButton("EOQ");
-        JButton BCsd  = new JButton("Compra Sin Deficit");
-        JButton BCcd  = new JButton("Compra Con Deficit");
-        JButton BMsd  = new JButton("Manofactura sin deficit");
-        JButton BMcd  = new JButton("Manofactuta con deficit");
-        JButton opc  = new JButton("¿Cuales operaciones puedo realizar?");
         
         
         //Creamos un formato que solo reciba entradas numericas
@@ -72,19 +122,8 @@ public class TeoriaDeInventarios {
         TTd.setValue(0);
         JFormattedTextField TTp = new JFormattedTextField(formatter);
         TTp.setValue(0);
-        
-        //Creamos labels para saber que variable va en cada campo
-        JLabel Ldem  = new JLabel("Demanda");
-        JLabel LCorden  = new JLabel("Costo orden");
-        JLabel LCman  = new JLabel("C.mantenimiento");
-        JLabel LCpen  = new JLabel("C.penalizacion");
-        JLabel LTd  = new JLabel("Tasa demanda");
-        JLabel LTp = new JLabel("Tasa produccion");
-        
-        //Creamos variables booleanas para saber si usaremos o no el campo
-        boolean D = false, Co = false, Cm = false, Cp = false, Td= false, Mc = false;
-        
-        //Campos a 120
+
+
         //Le damos las posiciones a todos los campos de datos
         Tdem.setBounds(50, 140, 100, 30);
         TCorden.setBounds(170, 140, 100, 30);
@@ -100,6 +139,14 @@ public class TeoriaDeInventarios {
         Ventana.add(TTd);
         Ventana.add(TTp);
         
+        
+        //Creamos labels para saber que variable va en cada campo
+        JLabel Ldem  = new JLabel("Demanda");
+        JLabel LCorden  = new JLabel("Costo orden");
+        JLabel LCman  = new JLabel("C.mantenimiento");
+        JLabel LCpen  = new JLabel("C.penalizacion");
+        JLabel LTd  = new JLabel("Tasa demanda");
+        JLabel LTp = new JLabel("Tasa produccion");
         //Posicionamos los nombres de los campos encima de estos
         
         Ldem.setBounds(50, 110, 100, 25);
@@ -119,11 +166,281 @@ public class TeoriaDeInventarios {
         
         
         
-        Ventana.setLocationRelativeTo(null);
-        Ventana.setVisible(true);
         
+        // Creamos los campos de texto donde irán las variables solicitadas
+        
+
+        cmDem.addItem("Dias");
+        cmDem.addItem("Anios");
+        cmMan.addItem("Dias");
+        cmMan.addItem("Anios");
+        diasMes.setValue(20);
+        
+        
+
+        //Le damos las posiciones a todos los campos de datos
+        cmDem.setBounds(50, 200, 100, 30);
+        cmMan.setBounds(290, 200, 100, 30);
+        diasMes.setBounds(490, 200, 100, 30);
+
+        
+        Ventana.add(cmDem);
+        Ventana.add(cmMan);
+        Ventana.add(diasMes);
+        
+        
+        //Creamos labels para saber que variable va en cada campo
+        JLabel cmdem  = new JLabel("Unidad de tiempo");
+        JLabel cmman  = new JLabel("Unidad de tiempo");
+        JLabel cmdm  = new JLabel("Dias trabajados al mes");
+
+        //Posicionamos los nombres de los campos encima de estos
+        
+        cmdem.setBounds(50, 240, 160, 30);
+        cmman.setBounds(290, 240, 160, 30);
+        cmdm.setBounds(490, 240, 150, 30);
+        
+        Ventana.add(cmdem);
+        Ventana.add(cmman);
+        Ventana.add(cmdm);
+                
+        
+        
+        TCorden.setBounds(170, 140, 100, 30);
+        TCman.setBounds(290, 140, 100, 30);
+        TCpen.setBounds(410, 140, 100, 30);
+        TTd.setBounds(530, 140, 100, 30);
+        TTp.setBounds(650, 140, 100, 30);
+        
+        //Posicionamos los botones
+        
+        JButton opc  = new JButton("Opciones");
+        opc.setBounds(50, 300, 100, 25);
+        opc.setBackground(Color.green);
+        opc.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrar(Tdem.getValue(), TCorden.getValue(),TCman.getValue(),
+                        TCpen.getValue(), TTd.getValue(), TTp.getValue());
+            }
+        });
+        opc.setVisible(true);
+        Ventana.add(opc);
+        BEoq.setBounds(220, 300, 100, 25);
+        BEoq.setVisible(false);
+        BEoq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mEOQ(Tdem.getValue(), TCorden.getValue(),TCman.getValue());
+            }
+        });
+        Ventana.add(BEoq);
+        BCsd.setBounds(50, 340, 150, 25);
+        BCsd.setVisible(false);
+        BCsd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mEOQ(Tdem.getValue(), TCorden.getValue(),TCman.getValue());
+            }
+        });
+        Ventana.add(BCsd);
+        BCcd.setBounds(220, 340, 150, 25);
+        BCcd.setVisible(false);
+        BCcd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mCcd(Tdem.getValue(), TCorden.getValue(),TCman.getValue(),TCpen.getValue());
+            }
+        });
+        
+        Ventana.add(BCcd);
+        BMsd.setBounds(50, 380, 150, 25);
+        BMsd.setVisible(false);
+        BMsd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mMsd(Tdem.getValue(), TCorden.getValue(),TCman.getValue(), TTd.getValue(), TTp.getValue());
+            }
+        });
+        Ventana.add(BMsd);
+        BMcd.setBounds(220, 380, 150, 25);
+        BMcd.setVisible(false);
+        Ventana.add(BMcd);
+             
+        
+    }
+
+    
+    public static void mostrar(Object a,Object b,Object c,Object d,Object e,Object f ){
+        if (!a.equals(0) && !b.equals(0) && !c.equals(0)){
+                BEoq.setVisible(true);
+                BCsd.setVisible(true);
+                BCcd.setVisible(false);
+                BMsd.setVisible(false);
+                BMcd.setVisible(false);
+                if (!d.equals(0)){
+                    BCcd.setVisible(true);
+                }
+                if (!e.equals(0) && !f.equals(0)){
+                    BMsd.setVisible(true);
+                    if (!d.equals(0)){
+                        BMcd.setVisible(true);
+                    }
+                }
+        }
+         
         
     }
     
+    public static void mEOQ(Object a,Object b,Object c){
+        int dem = (int) a;
+        int cosOr = (int) b;
+        int cosMan = (int) c;
+        int x = (int)diasMes.getValue();
+        float Q = (float) Math.sqrt(2*dem*cosOr/cosMan);
+        float demandaDiaria = 0;
+        float mantenimientoDiario = 0;
+        System.out.println();
+        String CD = cmDem.getSelectedItem().toString();
+        String CM = cmMan.getSelectedItem().toString();
+        if (CD.equals("Anios")){
+            System.out.println("Esta en años");
+            demandaDiaria = dem/(12*x);
+            if (CM.equals("Anios")){
+                Q = (float) Math.sqrt(2*dem*cosOr/cosMan);
+            }
+            //Caso en que este la demanda en anio y el mantenimiento en dias
+            else {
+                System.out.println("Y el otro en dias");
+                Q = (float) Math.sqrt(2*demandaDiaria*cosOr/cosMan);
+            }
+        }
+        if (CD.equals("Dias")){
+            
+            demandaDiaria = dem;
+            //Caso en que este la demanda en dias y el mantenimiento en anios
+            if (CM.equals("Anios")){
+                mantenimientoDiario = cosMan/ (12*x);
+                Q = (float) Math.sqrt(2*dem*cosOr/mantenimientoDiario);
+            }
+            
+            else {
+                Q = (float) Math.sqrt(2*demandaDiaria*cosOr/cosMan);
+            }
+        }
+        
+        Q = (int)Q;
+        System.out.println(Q);
+        String x1 = "Se necesitan:" + Q + " unidades por pedido";
+        tex.setText(x1);
+        tex2.setText("Se hace en " + (int)(dem/Q + 1) + " pedidos");
+        
+    }
+    
+    public static void mCcd(Object a,Object b,Object c, Object d){
+        int dem = (int) a;
+        int cosOr = (int) b;
+        int cosMan = (int) c;
+        int cosPen = (int) d;
+        int x = (int)diasMes.getValue();
+        int  Q = (int) Math.sqrt(2*dem*cosOr*(cosPen+cosMan)/(cosMan*cosPen));
+        String CD = cmDem.getSelectedItem().toString();
+        String CM = cmMan.getSelectedItem().toString();
+        float demandaDiaria = 0;
+        float mantenimientoDiario = 0;
+        if (CD.equals("Anios")){
+            demandaDiaria = dem/(12*x);
+            if (CM.equals("Anios")){
+                Q = (int)Math.sqrt(((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen)));
+            }
+            //Caso en que este la demanda en anio y el mantenimiento en dias
+            else {
+                Q = (int) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+cosMan)/(cosMan*cosPen));
+            }
+        }
+        if (CD.equals("Dias")){
+            
+            demandaDiaria = dem;
+            //Caso en que este la demanda en dias y el mantenimiento en anios
+            if (CM.equals("Anios")){
+                mantenimientoDiario = cosMan/ (12*x);
+                Q = (int) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+mantenimientoDiario)/(mantenimientoDiario*cosPen));
+            }
+            
+            else {
+                System.out.println("Diasx2");
+                System.out.println(cosOr);
+                int yp = 2*dem*cosOr;
+                yp = yp*100;
+                System.out.println(yp);
+                Q = (int)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
+                System.out.println(Q);
+            }
+        }
+        Q = (int)Q;
+
+        System.out.println(Q);
+        String x1 = "Se necesitan:" + Q + " unidades por pedido";
+        tex.setText(x1);
+        tex2.setText("Se hace en " + dem/Q + " pedidos");
+        
+    }
+    
+    
+    public static void mMsd(Object a,Object b,Object c, Object e,Object f){
+        
+        int dem = (int) a;
+        int cosOr = (int) b;
+        int cosMan = (int) c;
+        int tdem = (int)e;
+        int tprod = (int)f;
+        float xtdem = (float) tdem;
+        int x = (int)diasMes.getValue();
+        float Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
+        System.out.println(2*dem*cosOr);
+        float demandaDiaria = 0;
+        float mantenimientoDiario = 0;
+        System.out.println();
+        String CD = cmDem.getSelectedItem().toString();
+        String CM = cmMan.getSelectedItem().toString();
+        if (CD.equals("Anios")){
+            System.out.println("Esta en años");
+            demandaDiaria = dem/(12*x);
+            if (CM.equals("Anios")){
+                 Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
+            }
+            //Caso en que este la demanda en anio y el mantenimiento en dias
+            else {
+                System.out.println("Y el otro en dias");
+                 Q = (float) Math.sqrt(2*demandaDiaria*cosOr/(cosMan*(1-(xtdem/tprod))));
+            }
+        }
+        if (CD.equals("Dias")){
+            
+            demandaDiaria = dem;
+            //Caso en que este la demanda en dias y el mantenimiento en anios
+            if (CM.equals("Anios")){
+                mantenimientoDiario = cosMan/ (12*x);
+                Q = (float) Math.sqrt(2*dem*cosOr/(mantenimientoDiario*(1-(xtdem/tprod))));
+            }
+            
+            else {
+                Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
+            }
+        }
+        
+        Q = (int)Q;
+        System.out.println(Q);
+        String x1 = "Se necesitan:" + Q + " unidades por pedido";
+        tex.setText(x1);
+        tex2.setText("Se hace en " + dem/Q + " pedidos");
+    }
+    
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
