@@ -335,7 +335,7 @@ public class TeoriaDeInventarios implements ActionListener{
         }
         
         Q = (int)Q;
-        System.out.println(Q);
+        
         String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
         tex.setText(x1);
         tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
@@ -387,14 +387,10 @@ public class TeoriaDeInventarios implements ActionListener{
             }
             
             else {
-                System.out.println("Diasx2");
-                System.out.println(cosOr);
                 Q = (float)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
-                System.out.println(Q);
             }
         }
         Q = (int)Q;
-        System.out.println(Q);
         String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
         tex.setText(x1);
         tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
@@ -425,14 +421,12 @@ public class TeoriaDeInventarios implements ActionListener{
         String CD = cmDem.getSelectedItem().toString();
         String CM = cmMan.getSelectedItem().toString();
         if (CD.equals("Anios")){
-            System.out.println("Esta en años");
             demandaDiaria = dem/(12*x);
             if (CM.equals("Anios")){
                  Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(tdem/tprod))));
             }
             //Caso en que este la demanda en anio y el mantenimiento en dias
             else {
-                System.out.println("Y el otro en dias");
                  Q = (float) Math.sqrt(2*demandaDiaria*cosOr/(cosMan*(1-(tdem/tprod))));
             }
         }
@@ -451,7 +445,6 @@ public class TeoriaDeInventarios implements ActionListener{
         }
         
        Q = (int)Q;
-    System.out.println(Q);
     String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
     tex.setText(x1);
     tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
@@ -468,21 +461,18 @@ public class TeoriaDeInventarios implements ActionListener{
     float xtdem = (float) tdem;
     int x = (int)diasMes.getValue();
     float Q = (float) Math.sqrt(2*dem*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
-    System.out.println(2*dem*cosOr);
     float demandaDiaria = 0;
     float mantenimientoDiario = 0;
     System.out.println();
     String CD = cmDem.getSelectedItem().toString();
     String CM = cmMan.getSelectedItem().toString();
     if (CD.equals("Anios")){
-        System.out.println("Esta en años");
         demandaDiaria = dem/(12*x);
         if (CM.equals("Anios")){
              Q = (float) Math.sqrt(2*dem*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
         }
         //Caso en que este la demanda en anio y el mantenimiento en dias
         else {
-            System.out.println("Y el otro en dias");
              Q = (float) Math.sqrt(2*demandaDiaria*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
         }
     }
@@ -501,7 +491,6 @@ public class TeoriaDeInventarios implements ActionListener{
     }
 
     Q = (int)Q;
-    System.out.println(Q);
     String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
     tex.setText(x1);
     tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
