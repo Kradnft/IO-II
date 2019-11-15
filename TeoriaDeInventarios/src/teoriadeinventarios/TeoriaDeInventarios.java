@@ -163,12 +163,7 @@ public class TeoriaDeInventarios implements ActionListener{
         Ventana.add(LTd);
         Ventana.add(LTp);
         
-        
-        
-        
-        
-        // Creamos los campos de texto donde irán las variables solicitadas
-        
+                
 
         cmDem.addItem("Dias");
         cmDem.addItem("Anios");
@@ -266,6 +261,12 @@ public class TeoriaDeInventarios implements ActionListener{
         Ventana.add(BMsd);
         BMcd.setBounds(220, 380, 150, 25);
         BMcd.setVisible(false);
+        BMcd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mMcd(Tdem.getValue(), TCorden.getValue(),TCman.getValue(),TCpen.getValue(), TTd.getValue(), TTp.getValue());
+            }
+        });
         Ventana.add(BMcd);
              
         
@@ -292,32 +293,35 @@ public class TeoriaDeInventarios implements ActionListener{
          
         
     }
-    
+    //Metodo EOQ o compra sin deficit
     public static void mEOQ(Object a,Object b,Object c){
-        int dem = (int) a;
-        int cosOr = (int) b;
-        int cosMan = (int) c;
+        int de = (int) a;
+        int cosO = (int) b;
+        int cosM = (int) c;
+        //Pasamos un dato a decimal para que la respuesta no nos arroje siempre un entero
+        float dem = (float) de;
+        float cosOr = (float) cosO;
+        float cosMan = (float) cosM; 
+        //Obtenemos el dato de dias trabajados al mes por si se necesita mas adelante
         int x = (int)diasMes.getValue();
-        float Q = (float) Math.sqrt(2*dem*cosOr/cosMan);
+        float Q = 10;
         float demandaDiaria = 0;
         float mantenimientoDiario = 0;
-        System.out.println();
+        
         String CD = cmDem.getSelectedItem().toString();
         String CM = cmMan.getSelectedItem().toString();
+        
         if (CD.equals("Anios")){
-            System.out.println("Esta en años");
             demandaDiaria = dem/(12*x);
             if (CM.equals("Anios")){
                 Q = (float) Math.sqrt(2*dem*cosOr/cosMan);
             }
             //Caso en que este la demanda en anio y el mantenimiento en dias
             else {
-                System.out.println("Y el otro en dias");
                 Q = (float) Math.sqrt(2*demandaDiaria*cosOr/cosMan);
             }
         }
         if (CD.equals("Dias")){
-            
             demandaDiaria = dem;
             //Caso en que este la demanda en dias y el mantenimiento en anios
             if (CM.equals("Anios")){
@@ -332,23 +336,37 @@ public class TeoriaDeInventarios implements ActionListener{
         
         Q = (int)Q;
         System.out.println(Q);
-        String x1 = "Se necesitan:" + Q + " unidades por pedido";
+        String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
         tex.setText(x1);
-        tex2.setText("Se hace en " + (int)(dem/Q + 1) + " pedidos");
+        tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
         
     }
-    
+    //Metodo compra con deficit
     public static void mCcd(Object a,Object b,Object c, Object d){
-        int dem = (int) a;
-        int cosOr = (int) b;
-        int cosMan = (int) c;
-        int cosPen = (int) d;
+        //Le sacamos la parte entera a cada objeto
+        int de = (int) a;
+        int cosO = (int) b;
+        int cosMa = (int) c;
+        int cosPe = (int) d;
+        //Pasamos esa parte entera a flotante para poder ver los decimales
+        float dem = (float) de;
+        float cosOr = (float) cosO;
+        float cosMan = (float) cosMa;
+        float cosPen = (float) cosPe;
+        //Miramos cuantos dias se trabajan al mes
         int x = (int)diasMes.getValue();
-        int  Q = (int) Math.sqrt(2*dem*cosOr*(cosPen+cosMan)/(cosMan*cosPen));
+        //Iniciamos la variable Q (cantidad optima a pedir)
+        float  Q = 11;
+        //Miramos que campos tienen las opciones de unidad de tiempo
         String CD = cmDem.getSelectedItem().toString();
         String CM = cmMan.getSelectedItem().toString();
+        //Creamos variables de demanda y manteimiento diarios en casos de que toque convertir
         float demandaDiaria = 0;
         float mantenimientoDiario = 0;
+        /*
+        Miramos si estan en la misma unidad de tiempo, sino convertimos los datos
+        para trabajarlos en la misma unidad de tiempo
+        */
         if (CD.equals("Anios")){
             demandaDiaria = dem/(12*x);
             if (CM.equals("Anios")){
@@ -371,49 +389,51 @@ public class TeoriaDeInventarios implements ActionListener{
             else {
                 System.out.println("Diasx2");
                 System.out.println(cosOr);
-                int yp = 2*dem*cosOr;
-                yp = yp*100;
-                System.out.println(yp);
-                Q = (int)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
+                Q = (float)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
                 System.out.println(Q);
             }
         }
         Q = (int)Q;
-
         System.out.println(Q);
-        String x1 = "Se necesitan:" + Q + " unidades por pedido";
+        String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
         tex.setText(x1);
-        tex2.setText("Se hace en " + dem/Q + " pedidos");
-        
+        tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
     }
-    
-    
+    //Metodo manofactura sin deficit
     public static void mMsd(Object a,Object b,Object c, Object e,Object f){
         
-        int dem = (int) a;
-        int cosOr = (int) b;
-        int cosMan = (int) c;
-        int tdem = (int)e;
-        int tprod = (int)f;
-        float xtdem = (float) tdem;
+        //Le sacamos la parte entera a cada objeto
+        int de = (int) a;
+        int cosO = (int) b;
+        int cosMa = (int) c;
+        int tde = (int)e;
+        int tpro = (int)f;
+        //Pasamos esa parte entera a flotante para poder ver los decimales
+        float dem = (float) de;
+        float cosOr = (float) cosO;
+        float cosMan = (float) cosMa;
+        float tdem = (float) tde;
+        float tprod = (float) tpro;
+        //Tomamos el numero de dias trabajados al mes
         int x = (int)diasMes.getValue();
-        float Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
-        System.out.println(2*dem*cosOr);
+        //Iniciamos la variable Q (cantidad optima a pedir)
+        float Q = 11;
+        //Creamos variables de demanda y manteimiento diarios en casos de que toque convertir
         float demandaDiaria = 0;
         float mantenimientoDiario = 0;
-        System.out.println();
+        //Tomamos los valores de seleccion de anios o dias
         String CD = cmDem.getSelectedItem().toString();
         String CM = cmMan.getSelectedItem().toString();
         if (CD.equals("Anios")){
             System.out.println("Esta en años");
             demandaDiaria = dem/(12*x);
             if (CM.equals("Anios")){
-                 Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
+                 Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(tdem/tprod))));
             }
             //Caso en que este la demanda en anio y el mantenimiento en dias
             else {
                 System.out.println("Y el otro en dias");
-                 Q = (float) Math.sqrt(2*demandaDiaria*cosOr/(cosMan*(1-(xtdem/tprod))));
+                 Q = (float) Math.sqrt(2*demandaDiaria*cosOr/(cosMan*(1-(tdem/tprod))));
             }
         }
         if (CD.equals("Dias")){
@@ -422,20 +442,71 @@ public class TeoriaDeInventarios implements ActionListener{
             //Caso en que este la demanda en dias y el mantenimiento en anios
             if (CM.equals("Anios")){
                 mantenimientoDiario = cosMan/ (12*x);
-                Q = (float) Math.sqrt(2*dem*cosOr/(mantenimientoDiario*(1-(xtdem/tprod))));
+                Q = (float) Math.sqrt(2*dem*cosOr/(mantenimientoDiario*(1-(tdem/tprod))));
             }
             
             else {
-                Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(xtdem/tprod))));
+                Q = (float) Math.sqrt(2*dem*cosOr/(cosMan*(1-(tdem/tprod))));
             }
         }
         
-        Q = (int)Q;
-        System.out.println(Q);
-        String x1 = "Se necesitan:" + Q + " unidades por pedido";
-        tex.setText(x1);
-        tex2.setText("Se hace en " + dem/Q + " pedidos");
+       Q = (int)Q;
+    System.out.println(Q);
+    String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
+    tex.setText(x1);
+    tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
     }
+    //Metodo manofactura con deficit
+    public static void mMcd(Object a,Object b,Object c, Object d, Object e,Object f){
+
+    int dem = (int) a;
+    int cosOr = (int) b;
+    int cosMan = (int) c;
+    int pena = (int) d;
+    int tdem = (int)e;
+    int tprod = (int)f;
+    float xtdem = (float) tdem;
+    int x = (int)diasMes.getValue();
+    float Q = (float) Math.sqrt(2*dem*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
+    System.out.println(2*dem*cosOr);
+    float demandaDiaria = 0;
+    float mantenimientoDiario = 0;
+    System.out.println();
+    String CD = cmDem.getSelectedItem().toString();
+    String CM = cmMan.getSelectedItem().toString();
+    if (CD.equals("Anios")){
+        System.out.println("Esta en años");
+        demandaDiaria = dem/(12*x);
+        if (CM.equals("Anios")){
+             Q = (float) Math.sqrt(2*dem*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
+        }
+        //Caso en que este la demanda en anio y el mantenimiento en dias
+        else {
+            System.out.println("Y el otro en dias");
+             Q = (float) Math.sqrt(2*demandaDiaria*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
+        }
+    }
+    if (CD.equals("Dias")){
+
+        demandaDiaria = dem;
+        //Caso en que este la demanda en dias y el mantenimiento en anios
+        if (CM.equals("Anios")){
+            mantenimientoDiario = cosMan/ (12*x);
+            Q = (float) Math.sqrt(2*dem*cosOr*(pena+mantenimientoDiario)/(mantenimientoDiario*pena*(1-(xtdem/tprod))));
+        }
+
+        else {
+            Q = (float) Math.sqrt(2*dem*cosOr*(pena+cosMan)/(cosMan*pena*(1-(xtdem/tprod))));
+        }
+    }
+
+    Q = (int)Q;
+    System.out.println(Q);
+    String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
+    tex.setText(x1);
+    tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
+}
+
     
     
     @Override
