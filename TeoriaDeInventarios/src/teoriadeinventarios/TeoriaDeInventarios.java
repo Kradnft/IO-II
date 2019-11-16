@@ -338,7 +338,7 @@ public class TeoriaDeInventarios implements ActionListener{
         
         String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
         tex.setText(x1);
-        tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
+        tex2.setText("Se hace en " + (int)((demandaDiaria*12*x)/Q +1) + " pedidos");
         
     }
     //Metodo compra con deficit
@@ -370,30 +370,28 @@ public class TeoriaDeInventarios implements ActionListener{
         if (CD.equals("Anios")){
             demandaDiaria = dem/(12*x);
             if (CM.equals("Anios")){
-                Q = (int)Math.sqrt(((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen)));
+                Q = (float)Math.sqrt(((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen)));
             }
             //Caso en que este la demanda en anio y el mantenimiento en dias
             else {
-                Q = (int) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+cosMan)/(cosMan*cosPen));
+                Q = (float) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+cosMan)/(cosMan*cosPen));
             }
         }
         if (CD.equals("Dias")){
-            
             demandaDiaria = dem;
             //Caso en que este la demanda en dias y el mantenimiento en anios
             if (CM.equals("Anios")){
                 mantenimientoDiario = cosMan/ (12*x);
-                Q = (int) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+mantenimientoDiario)/(mantenimientoDiario*cosPen));
+                Q = (float) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+mantenimientoDiario)/(mantenimientoDiario*cosPen));
             }
             
             else {
                 Q = (float)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
             }
         }
-        Q = (int)Q;
-        String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
+        String x1 = "Se necesitan:" + (int)(Q+1) + " unidades por pedido";
         tex.setText(x1);
-        tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
+        tex2.setText("Se hace en " + (int)((demandaDiaria*12*x)/Q +1) + " pedidos");
     }
     //Metodo manofactura sin deficit
     public static void mMsd(Object a,Object b,Object c, Object e,Object f){
@@ -444,10 +442,9 @@ public class TeoriaDeInventarios implements ActionListener{
             }
         }
         
-       Q = (int)Q;
-    String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
+    String x1 = "Se necesitan:" + (int)(Q+1) + " unidades por pedido";
     tex.setText(x1);
-    tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
+        tex2.setText("Se hace en " + (int)((demandaDiaria*12*x)/Q +1) + " pedidos");
     }
     //Metodo manofactura con deficit
     public static void mMcd(Object a,Object b,Object c, Object d, Object e,Object f){
@@ -493,7 +490,7 @@ public class TeoriaDeInventarios implements ActionListener{
     Q = (int)Q;
     String x1 = "Se necesitan:" + (Q+1) + " unidades por pedido";
     tex.setText(x1);
-    tex2.setText("Se hace en " + (int)(dem/Q +1) + " pedidos");
+    tex2.setText("Se hace en " + (int)((demandaDiaria*12*x)/Q +1) + " pedidos");
 }
 
     
