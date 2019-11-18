@@ -381,7 +381,7 @@ public class TeoriaDeInventarios implements ActionListener{
             demandaDiaria = dem;
             //Caso en que este la demanda en dias y el mantenimiento en anios
             if (CM.equals("Anios")){
-                mantenimientoDiario = cosMan/ (12*x);
+                mantenimientoDiario = cosMan / (12*x);
                 Q = (float) Math.sqrt(2*demandaDiaria*cosOr*(cosPen+mantenimientoDiario)/(mantenimientoDiario*cosPen));
             }
             
@@ -389,7 +389,7 @@ public class TeoriaDeInventarios implements ActionListener{
                 Q = (float)Math.sqrt((2*dem*cosOr*(cosPen+cosMan))/(cosMan*cosPen));
             }
         }
-        String x1 = "Se necesitan:" + (int)(Q+1) + " unidades por pedido";
+        String x1 = "Se necesitan:" +(Q+1) + " unidades por pedido";
         tex.setText(x1);
         tex2.setText("Se hace en " + (int)((demandaDiaria*12*x)/Q +1) + " pedidos");
     }
